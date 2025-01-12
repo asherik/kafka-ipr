@@ -2,10 +2,11 @@ package obuch;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
@@ -14,9 +15,18 @@ public class CreateTopic {
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:29099,localhost:39099,localhost:49099");
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("acks", "all");
 
         try (AdminClient adminClient = AdminClient.create(props)) {
-            NewTopic newTopic = new NewTopic("topik2", 1, (short) 3);
+            // Конфигурации для топика
+            Map<String, String> topicConfig = new HashMap<>();
+            topicConfig.put("min.insync.replicas", "4");
+
+            // Создание топика с конфигурациями
+            NewTopic newTopic = new NewTopic("topik12", 50, (short) 3)
+                    .configs(topicConfig);
 
             adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
 
@@ -26,5 +36,4 @@ public class CreateTopic {
             e.printStackTrace();
         }
     }
-
 }
