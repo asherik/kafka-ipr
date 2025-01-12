@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Properties;
 
 @Slf4j
-public class SimpleConsumer {
+public class SimpleConsumer1 {
     public static void main(String[] args) {
         Properties props = new Properties();
 
