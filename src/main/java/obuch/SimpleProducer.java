@@ -16,21 +16,28 @@ public class SimpleProducer {
         props.put("bootstrap.servers", "localhost:29099,localhost:39099,localhost:49099");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("acks", "1");
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
-        ProducerRecord<String, String> record = new ProducerRecord<>("topik", "kluch", "znachenie");
+        try {
+            ProducerRecord<String, String> record = new ProducerRecord<>("topik13", "kluch", "znachenie");
 
-        producer.send(record, new Callback() {
-            public void onCompletion(RecordMetadata metadata, Exception e) {
-                if (e != null) {
-                    e.printStackTrace();
-                } else {
-                    log.info("Отправлено в топик {} с офсетом {}", metadata.topic(), metadata.offset());
+            producer.send(record, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata metadata, Exception e) {
+                    if (e != null) {
+                        log.error("Ошибка при отправке сообщения", e);
+                    } else {
+                        log.info("Отправлено в топик {} с офсетом {}", metadata.topic(), metadata.offset());
+                    }
                 }
-            }
-        });
+            });
 
-        producer.close();
+        } catch (Exception e) {
+            log.error("Произошла ошибка в процессе отправки", e);
+        } finally {
+            producer.close();
+        }
     }
 }

@@ -20,7 +20,7 @@ public class SimpleConsumer1 {
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList("topik"));
+        consumer.subscribe(Collections.singletonList("topik13"));
 
         try {
             while (true) {
