@@ -1,0 +1,132 @@
+services:
+  ##################################################
+  # ZOOKEEPER
+  ##################################################
+  ipr-zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: ipr-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - ipr-network
+    ports:
+      - "32181:2181"
+    healthcheck:
+      test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  ##################################################
+  # BROKER #1
+  ##################################################
+  ipr-kafka-broker1:
+    image: confluentinc/cp-kafka:latest
+    container_name: ipr-kafka-broker1
+    depends_on:
+      - ipr-zookeeper
+    networks:
+      - ipr-network
+    ports:
+      - "29099:29099"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: ipr-zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9099,PLAINTEXT_HOST://0.0.0.0:29099
+
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ipr-kafka-broker1:9099,PLAINTEXT_HOST://localhost:29099
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+
+      KAFKA_MESSAGE_MAX_BYTES: 200000000
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 200000000
+
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9099"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    restart: on-failure
+
+  ##################################################
+  # BROKER #2
+  ##################################################
+  ipr-kafka-broker2:
+    image: confluentinc/cp-kafka:latest
+    container_name: ipr-kafka-broker2
+    depends_on:
+      - ipr-zookeeper
+    networks:
+      - ipr-network
+    ports:
+      - "39099:39099"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: ipr-zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9099,PLAINTEXT_HOST://0.0.0.0:39099
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ipr-kafka-broker2:9099,PLAINTEXT_HOST://localhost:39099
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_MESSAGE_MAX_BYTES: 200000000
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 200000000
+
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9099"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    restart: on-failure
+
+  ##################################################
+  # BROKER #3
+  ##################################################
+  ipr-kafka-broker3:
+    image: confluentinc/cp-kafka:latest
+    container_name: ipr-kafka-broker3
+    depends_on:
+      - ipr-zookeeper
+    networks:
+      - ipr-network
+    ports:
+      - "49099:49099"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: ipr-zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9099,PLAINTEXT_HOST://0.0.0.0:49099
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ipr-kafka-broker3:9099,PLAINTEXT_HOST://localhost:49099
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_MESSAGE_MAX_BYTES: 200000000
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 200000000
+
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9099"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    restart: on-failure
+
+##################################################
+# NETWORK
+##################################################
+networks:
+  ipr-network:
+    driver: bridge
