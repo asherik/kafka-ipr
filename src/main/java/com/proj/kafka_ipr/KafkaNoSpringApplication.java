@@ -1,4 +1,4 @@
-package com.proj.kafka_no_spring;
+package com.proj.kafka_ipr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

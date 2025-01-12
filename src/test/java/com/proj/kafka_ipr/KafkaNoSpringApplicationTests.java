@@ -1,4 +1,4 @@
-package com.proj.kafka_no_spring;
+package com.proj.kafka_ipr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
