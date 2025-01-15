@@ -10,7 +10,7 @@
 <h1>Газпром Цена Акций: <span id="price">Загрузка...</span></h1>
 
 <script>
-    var socket = new SockJS('/ws-stock');
+    var socket = new SockJS('http://localhost:8088/ws-stock');
     var stompClient = Stomp.over(socket);
 
 
