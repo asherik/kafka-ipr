@@ -1,7 +1,7 @@
 package com.proj.stockmonitoring.service;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.proj.stockmonitoring.model.StockPrice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +20,7 @@ public class StockPriceConsumer {
     public StockPriceConsumer(RedisTemplate<String, Double> redisTemplate) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
     }
 
     @KafkaListener(topics = "${stock.price.topic}", groupId = "stock_group")

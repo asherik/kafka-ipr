@@ -1,8 +1,8 @@
 package com.proj.stockmonitoring.service;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.proj.stockmonitoring.model.StockPrice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -26,6 +26,7 @@ public class StockPriceProducer {
         this.kafkaTemplate = kafkaTemplate;
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
     }
 
     @Scheduled(fixedRate = 1000)
