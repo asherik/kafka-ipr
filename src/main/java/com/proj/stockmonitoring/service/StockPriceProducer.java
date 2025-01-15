@@ -40,14 +40,20 @@ public class StockPriceProducer {
             JsonNode marketData = root.path("marketdata").path("data");
             if (marketData.isArray() && !marketData.isEmpty()) {
                 JsonNode firstEntry = marketData.get(0);
-                double price = firstEntry.get(0).asDouble();
-                StockPrice stockPrice = new StockPrice("GAZP", price, LocalDateTime.now());
-                String stockPriceJson = objectMapper.writeValueAsString(stockPrice);
-                kafkaTemplate.send(stockPriceTopic, stockPrice.getSymbol(), stockPriceJson);
-                log.info("Sent to Kafka: " + stockPriceJson);
+                // Извлекаем поле "LAST" по индексу 12
+                JsonNode lastPriceNode = firstEntry.get(12);
+                if (lastPriceNode != null && !lastPriceNode.isNull()) {
+                    double price = lastPriceNode.asDouble();
+                    StockPrice stockPrice = new StockPrice("GAZP", price, LocalDateTime.now());
+                    String stockPriceJson = objectMapper.writeValueAsString(stockPrice);
+                    kafkaTemplate.send(stockPriceTopic, stockPrice.getSymbol(), stockPriceJson);
+                    log.info("Отправлено в Kafka: " + stockPriceJson);
+                } else {
+                    log.warn("Поле 'LAST' отсутствует или равно null в полученных данных.");
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Ошибка при отправке цены акции в Kafka", e);
         }
     }
 }
