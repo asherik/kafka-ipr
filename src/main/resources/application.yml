@@ -1,9 +1,11 @@
+server:
+  port: 8088
 spring:
   application:
     name: kafka_ipr
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: "localhost:29099,localhost:39099,localhost:49099"
     consumer:
       group-id: stock_group
       auto-offset-reset: earliest
