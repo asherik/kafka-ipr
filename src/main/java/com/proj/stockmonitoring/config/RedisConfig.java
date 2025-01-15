@@ -1,6 +1,7 @@
 package com.proj.stockmonitoring.config;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 @Configuration
+@Slf4j
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
@@ -27,7 +29,7 @@ public class RedisConfig {
 
     @PostConstruct
     public void logRedisConfig() {
-        System.out.println("Redis Host: " + redisHost);
-        System.out.println("Redis Port: " + redisPort);
+        log.info("Redis Host: " + redisHost);
+        log.info("Redis Port: " + redisPort);
     }
 }

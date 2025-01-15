@@ -3,12 +3,14 @@ package com.proj.stockmonitoring.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.proj.stockmonitoring.model.StockPrice;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class StockPriceConsumer {
 
     @Value("${stock.price.topic}")
@@ -28,7 +30,7 @@ public class StockPriceConsumer {
         try {
             StockPrice stockPrice = objectMapper.readValue(message, StockPrice.class);
             redisTemplate.opsForValue().set("stock_price", stockPrice.getPrice());
-            System.out.println("Saved to Redis: " + stockPrice.getPrice());
+            log.info("Saved to Redis: " + stockPrice.getPrice());
         } catch (Exception e) {
             e.printStackTrace();
         }

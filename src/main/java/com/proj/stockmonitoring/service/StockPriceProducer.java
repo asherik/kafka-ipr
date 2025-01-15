@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.proj.stockmonitoring.model.StockPrice;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class StockPriceProducer {
 
     @Value("${stock.price.topic}")
@@ -42,7 +44,7 @@ public class StockPriceProducer {
                 StockPrice stockPrice = new StockPrice("GAZP", price, LocalDateTime.now());
                 String stockPriceJson = objectMapper.writeValueAsString(stockPrice);
                 kafkaTemplate.send(stockPriceTopic, stockPrice.getSymbol(), stockPriceJson);
-                System.out.println("Sent to Kafka: " + stockPriceJson);
+                log.info("Sent to Kafka: " + stockPriceJson);
             }
         } catch (Exception e) {
             e.printStackTrace();
