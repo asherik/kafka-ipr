@@ -42,11 +42,14 @@ public class SimpleConsumerIzolUncomitted {
             TopicPartition partition = assignedPartitions.iterator().next();
 
 
-            long startPosition = consumer.position(partition);
-            log.info("Начальная позиция: {}", startPosition);
-
-
             while (true) {
+
+                long startPosition = consumer.position(partition);
+                log.info("Начальная позиция: {}", startPosition);
+
+                consumer.seek(partition, startPosition - 3);
+
+
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
                     log.info("Принято сообщение: key = {}, value = {}, offset = {}",
