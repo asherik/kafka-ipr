@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
 
 @Slf4j
 public class SimpleConsumerIzolUncomitted {
@@ -27,12 +29,33 @@ public class SimpleConsumerIzolUncomitted {
         consumer.subscribe(Collections.singletonList("topik13"));
 
         try {
+
+            consumer.poll(Duration.ofMillis(0));
+            Set<TopicPartition> assignedPartitions = consumer.assignment();
+
+            while (assignedPartitions.isEmpty()) {
+                consumer.poll(Duration.ofMillis(100));
+                assignedPartitions = consumer.assignment();
+            }
+
+
+            TopicPartition partition = assignedPartitions.iterator().next();
+
+
+            long startPosition = consumer.position(partition);
+            log.info("Начальная позиция: {}", startPosition);
+
+
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
                     log.info("Принято сообщение: key = {}, value = {}, offset = {}",
                             record.key(), record.value(), record.offset());
                 }
+
+
+                long currentPosition = consumer.position(partition);
+                log.info("Текущая позиция: {}", currentPosition);
             }
         } finally {
             consumer.close();
