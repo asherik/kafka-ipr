@@ -29,9 +29,10 @@ public class SimpleProducerIzol {
             producer.send(new ProducerRecord<>("topik13", "kluch", "znachenie1"));
             log.info("Сообщение отправлено, но транзакция ещё не завершена");
 
-//
-//            producer.abortTransaction();
-//            log.info("Транзакция откатилась");
+            Thread.sleep(100);
+
+            producer.abortTransaction();
+            log.info("Транзакция откатилась");
 
 
 //             producer.commitTransaction();
