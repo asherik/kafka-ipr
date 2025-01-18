@@ -47,7 +47,10 @@ public class SimpleConsumerIzolUncomitted {
                 long startPosition = consumer.position(partition);
                 log.info("Начальная позиция: {}", startPosition);
 
-                consumer.seek(partition, startPosition - 3);
+
+                if (startPosition > 0) {
+                    consumer.seek(partition, startPosition - 1);
+                }
 
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
