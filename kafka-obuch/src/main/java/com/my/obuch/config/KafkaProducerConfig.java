@@ -23,7 +23,6 @@ public class KafkaProducerConfig {
         confProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         confProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-
         confProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "testik-transactional-id");
 
         DefaultKafkaProducerFactory<String, String> factory = new DefaultKafkaProducerFactory<>(confProps);

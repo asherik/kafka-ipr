@@ -17,15 +17,10 @@ public class Consumer {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @KafkaListener(topics = "testik", groupId = "testik_group")
-    @Transactional
     public void listenGroupTestik(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
         try {
 
             log.info("Получено сообщение: {}", record.value());
-
-
-            kafkaTemplate.send("testik", "ответное сообщение");
-
 
             acknowledgment.acknowledge();
         } catch (Exception e) {

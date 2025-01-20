@@ -18,7 +18,7 @@ public class Producer {
         for (int j = 0; j < i; j++) {
             kafkaTemplate.send("testik", "sadsadsa");
             Thread.sleep(2000);
-//            throw new RuntimeException("портим");
+            // throw new RuntimeException("портим");
         }
         Thread.sleep(10000);
     }
