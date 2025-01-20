@@ -3,3 +3,16 @@ server:
 spring:
   application:
     name: obuch
+
+  kafka:
+    bootstrap-servers: "localhost:29099,localhost:39099,localhost:49099"
+#    consumer:
+#      group-id: testik-group
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    template:
+      default-topic: testik

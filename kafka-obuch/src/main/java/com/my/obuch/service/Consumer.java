@@ -10,7 +10,7 @@ public class Consumer {
 
     @KafkaListener(topics = "testik", groupId = "testik_group")
     public void listenGroupTestik(String message) {
-        log.info("Сообщение: {}", message);
+        log.info("Получено сообщение: {}", message);
     }
 
 }
