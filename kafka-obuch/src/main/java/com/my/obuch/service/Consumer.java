@@ -24,7 +24,7 @@ public class Consumer {
             log.info("Получено сообщение: {}", record.value());
 
 
-            kafkaTemplate.send("другая_тема", "ответное сообщение");
+            kafkaTemplate.send("testik", "ответное сообщение");
 
 
             acknowledgment.acknowledge();
