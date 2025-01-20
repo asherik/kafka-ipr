@@ -1,0 +1,4 @@
+long currentPosition = consumer.position(partition);
+consumer.seek(partition, currentPosition - 3);
+
+как перечитать топик, смещая позицию

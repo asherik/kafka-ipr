@@ -19,10 +19,10 @@ public class CreateTopic {
         try (AdminClient adminClient = AdminClient.create(props)) {
             // Конфигурации для топика
             Map<String, String> topicConfig = new HashMap<>();
-            topicConfig.put("min.insync.replicas", "4");
+            topicConfig.put("min.insync.replicas", "3");
 
             // Создание топика с конфигурациями
-            NewTopic newTopic = new NewTopic("topik13", 50, (short) 3)
+            NewTopic newTopic = new NewTopic("topik13", 1, (short) 3)
                     .configs(topicConfig);
 
             adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
