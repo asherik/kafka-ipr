@@ -24,9 +24,9 @@ public class ConsumerConfiguration {
         params.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         params.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
+        params.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_uncommitted");
 
         return new DefaultKafkaConsumerFactory<>(params);
-
     }
 
     @Bean
@@ -35,5 +35,4 @@ public class ConsumerConfiguration {
         concurrentKafkaListenerContainerFactory.setConsumerFactory(consumerFactory());
         return concurrentKafkaListenerContainerFactory;
     }
-
 }
