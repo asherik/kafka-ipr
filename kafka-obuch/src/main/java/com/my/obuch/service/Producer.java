@@ -14,12 +14,15 @@ public class Producer {
     @SneakyThrows
     @Transactional
     public void sendMessage() {
-        int i = 8;
-        for (int j = 0; j < i; j++) {
-            kafkaTemplate.send("testik", "sadsadsa");
-            Thread.sleep(2000);
-            // throw new RuntimeException("портим");
-        }
-        Thread.sleep(10000);
+//        int i = 8;
+//        for (int j = 0; j < i; j++) {
+//            kafkaTemplate.send("testik", "sadsadsa");
+//            Thread.sleep(2000);
+//            // throw new RuntimeException("портим");
+//        }
+//        Thread.sleep(10000);
+
+        kafkaTemplate.send("testik", "sadsadsa1223");
+
     }
 }

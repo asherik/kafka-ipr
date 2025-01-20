@@ -13,7 +13,7 @@ public class ScheduledTasks {
 
     private final Producer producer;
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 200000000)
     public void reportCurrentTime() {
         producer.sendMessage();
     }
