@@ -20,5 +20,6 @@ public class Producer {
             Thread.sleep(2000);
             throw new RuntimeException("портим");
         }
+        Thread.sleep(10000);
     }
 }
