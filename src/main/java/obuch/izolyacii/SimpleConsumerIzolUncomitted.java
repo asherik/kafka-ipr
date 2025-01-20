@@ -45,12 +45,12 @@ public class SimpleConsumerIzolUncomitted {
             while (true) {
 
                 long startPosition = consumer.position(partition);
-                log.info("Начальная позиция: {}", startPosition);
+//                log.info("Начальная позиция: {}", startPosition);
 
-
-                if (startPosition > 0) {
-                    consumer.seek(partition, startPosition - 1);
-                }
+//
+//                if (startPosition > 0) {
+//                    consumer.seek(partition, startPosition - 1);
+//                }
 
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
@@ -61,7 +61,7 @@ public class SimpleConsumerIzolUncomitted {
 
 
                 long currentPosition = consumer.position(partition);
-                log.info("Текущая позиция: {}", currentPosition);
+//                log.info("Текущая позиция: {}", currentPosition);
             }
         } finally {
             consumer.close();

@@ -1,6 +1,7 @@
 package com.my.obuch.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
@@ -20,4 +21,13 @@ public class KafkaConfig {
         return new KafkaAdmin(conf);
     }
 
+    @Bean
+    public NewTopic newTopic() {
+        return new NewTopic("testik", 2, (short) 3);
+    }
+
+    @Bean
+    public NewTopic newTopic2() {
+        return new NewTopic("testik2", 2, (short) 3);
+    }
 }
